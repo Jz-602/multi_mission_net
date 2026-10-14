@@ -1,0 +1,15 @@
+pip install waymo-open-dataset-tf-2-11-0
+pip install "open3d==0.16.0"
+pip install easydict
+
+pip install "tensorboardX==2.5.1"
+pip install "numba==0.56.4"
+
+pip install spconv-cu120
+
+pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu129
+pip install ./torch_scatter-2.1.2+pt28cu129-cp310-cp310-linux_x86_64.whl
+
+
+cd /media/estella/Osmanthus/aa_code/FH_Object_Detection/2025-Waymo-OD/det3d/iou3d_nms
+python setup.py build_ext --inplace

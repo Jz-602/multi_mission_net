@@ -1,0 +1,15 @@
+
+
+KITTITrackingDataset为读入KITTI tracking dataset的数据，并将包围框显示出来
+
+test_ShapeComletionTracker为将shape completion的代码在kitti数据库上进行实验
+
+test_ShapeComletionTrackerOurs为将shape completion的代码在我们自己的训练集数据库上进行实验
+
+train_ShapeComletionTrackerOurs为将shape completion的代码在我们自己的训练集数据库上进行训练得到模型
+
+FH_OnlineShapeComletionTracker为利用我们自己的模型在我们自己的数据集上进行测试
+
+
+
+

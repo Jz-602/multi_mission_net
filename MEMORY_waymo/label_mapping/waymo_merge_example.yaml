@@ -1,0 +1,79 @@
+CLASS_NAMES:
+  - UNKNOWN
+  - VEHICLE
+  - CYCLIST
+  - PEDESTRIAN
+  - POLE
+  - GENERAL_OBSTACLE
+  - VEGETATION
+  - ROAD
+  - LOW_GROUND
+
+learning_map:
+  0: 0   # "UNDEFINED"         -> "UNKNOWN"
+  1: 1   # "CAR"               -> "VEHICLE"
+  2: 1   # "TRUCK"             -> "VEHICLE"
+  3: 1   # "BUS"               -> "VEHICLE"
+  4: 1   # "OTHER_VEHICLE"     -> "VEHICLE"
+  5: 2   # "MOTORCYCLIST"      -> "CYCLIST"
+  6: 2   # "BICYCLIST"         -> "CYCLIST"
+  7: 3   # "PEDESTRIAN"        -> "PEDESTRIAN"
+  8: 4   # "SIGN"              -> "POLE"
+  9: 4   # "TRAFFIC_LIGHT"     -> "POLE"
+  10: 4  # "POLE"              -> "POLE"
+  11: 5  # "CONSTRUCTION_CONE" -> "GENERAL_OBSTACLE"
+  12: 2  # "BICYCLE"           -> "CYCLIST"
+  13: 2  # "MOTORCYCLE"        -> "CYCLIST"
+  14: 5  # "BUILDING"          -> "GENERAL_OBSTACLE"
+  15: 6  # "VEGETATION"        -> "VEGETATION"
+  16: 4  # "TREE_TRUNK"        -> "POLE"
+  17: 7  # "CURB"              -> "ROAD"
+  18: 7  # "ROAD"              -> "ROAD"
+  19: 7  # "LANE_MARKER"       -> "ROAD"
+  20: 7  # "OTHER_GROUND"      -> "ROAD"
+  21: 8  # "WALKABLE"          -> "LOW_GROUND"
+  22: 8  # "SIDEWALK"          -> "LOW_GROUND"
+  100: 0 # sampled no-semantic points -> ignore
+
+sampler_semantic_label:
+  vehicle: 1     # Waymo "CAR"，后续由 learning_map 映射到 VEHICLE
+  pedestrian: 7  # Waymo "PEDESTRIAN"，后续由 learning_map 映射到 PEDESTRIAN
+  cyclist: 5     # Waymo "MOTORCYCLIST"，后续由 learning_map 映射到 CYCLIST
+  sign: 8        # Waymo "SIGN"，后续由 learning_map 映射到 POLE
+
+VISUALIZATION_COLORS:
+  UNKNOWN: [0.00, 0.00, 0.00]
+  VEHICLE: [1.00, 0.05, 0.02]
+  CYCLIST: [0.90, 0.00, 1.00]
+  PEDESTRIAN: [1.00, 0.48, 0.00]
+  POLE: [1.00, 0.85, 0.00]
+  GENERAL_OBSTACLE: [0.82, 0.62, 0.86]
+  VEGETATION: [0.12, 0.78, 0.18]
+  ROAD: [0.28, 0.30, 0.32]
+  LOW_GROUND: [0.10, 0.55, 1.00]
+
+###################################################
+#CLASS_NAMES:
+#  - UNDEFINED
+#  - CAR
+#  - TRUCK
+#  - BUS
+#  - OTHER_VEHICLE
+#  - MOTORCYCLIST
+#  - BICYCLIST
+#  - PEDESTRIAN
+#  - SIGN
+#  - TRAFFIC_LIGHT
+#  - POLE
+#  - CONSTRUCTION_CONE
+#  - BICYCLE
+#  - MOTORCYCLE
+#  - BUILDING
+#  - VEGETATION
+#  - TREE_TRUNK
+#  - CURB
+#  - ROAD
+#  - LANE_MARKER
+#  - OTHER_GROUND
+#  - WALKABLE
+#  - SIDEWALK

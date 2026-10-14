@@ -1,0 +1,163 @@
+sync_batchnorm: True
+
+common_variables:
+#  root_path: /home/hao/dataset/waymo-small/FH
+  root_path: /media/gk/data/lyf/aa_data/FH_waymo
+  label_mapping: waymo_23class.yaml
+  ignore_index: 0
+
+  tasks: [['vehicle'], ['pedestrian', 'cyclist']]
+  pc_range: [-80, -80, -7, 80, 80, 5.8]
+  voxel_size: [0.05, 0.05, 0.05]
+  out_size_factor: [4, 4]
+
+dataloader:
+  train:
+    batch_size: 1
+    num_workers: 16
+    shuffle: True
+    pin_memory: False
+  val:
+    batch_size: 1
+    num_workers: 16
+    shuffle: False
+    pin_memory: False
+
+optimizer:
+  _target_: torch.optim.AdamW
+  lr: 0.0015
+  betas: [0.9, 0.99]
+  weight_decay: 0.01
+  amsgrad: False
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.OneCycleLR
+  max_lr: 0.0015
+  div_factor: 10.0
+  pct_start: 0.4
+
+trainer:
+  clip_grad_val: 35
+  eval_every_nepochs: 48
+  eval_epochs: [1]
+  max_epochs: 48
+  log_every_niters: 50
+
+data:
+  train_dataset:
+    info_path: LYF_waymo_infos_training_semantic.pkl
+
+    loading_pipelines:
+      - FH_LoadPointCloud
+      - load_box3d
+      - load_semantic
+
+    augmentation:
+      rotation:
+        _target_: Augmentation.Rotation
+        rotation: [-0.785, 0.785]
+      scaling:
+        _target_: Augmentation.Scaling
+        scale: [0.9, 1.1]
+      translation:
+        _target_: Augmentation.Translation
+        noise: 0.5
+      flip:
+        _target_: Augmentation.Flip
+        flip_prob: [0.5, 0.5]
+
+    prepare_label:
+      centermap:
+        _target_: Assign.AssignLabel
+        gaussian_overlap: 0.1
+        max_objs: 500
+        min_radius: 2
+
+    sampler:
+      dbinfo_path: 'LYF_dbinfos_train_semantic.pkl'
+      groups:
+        ['vehicle': 15, 'pedestrian': 10, 'cyclist': 10]
+      min_gt_point_dict:
+        vehicle: 10
+        pedestrian: 10
+        cyclist: 10
+
+  val_dataset:
+    info_path: LYF_waymo_infos_validation_semantic.pkl
+#    info_path: waymo_infos_validation.pkl
+    loading_pipelines:
+      - FH_LoadPointCloud
+      - load_semantic
+      - load_box3d
+
+  test_dataset:
+    info_path: LYF_waymo_infos_validation_semantic.pkl
+#    info_path: waymo_infos_validation.pkl
+    loading_pipelines:
+      - FH_LoadPointCloud
+      - load_semantic
+      - load_box3d
+
+model:
+
+  reader:
+    _target_: PillarEncoder.PillarFeatureNet
+    num_filters: [64, 64]
+    num_input_features: 3
+
+  backbone:
+    _target_: SparseResnet.SparseResNet
+#    layer_nums: [2, 2, 2, 2]
+#    ds_layer_strides: [1, 2, 2, 2]
+#    ds_num_filters: [64, 128, 256, 256]
+    layer_nums: [1, 1, 1]
+    ds_layer_strides: [2, 2, 2]
+#    ds_num_filters: [128, 256, 256]
+    ds_num_filters: [64, 128, 256]
+    num_input_features: 64
+
+  neck:
+    _target_: ASPPNeck.ASPPNeck
+    in_channels: 256
+#    in_channels: 128
+
+  head:
+    _target_: CenterHead.CenterHead
+    code_weights: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+    common_heads:
+      reg: [2, 2]
+      height: [1, 2]
+      dim: [3, 2]
+      rot: [2, 2]
+      iou: [1, 2]
+    in_channels: 256
+#    in_channels: 128
+    strides: [2, 2]
+    weight: 1
+    with_reg_iou: True
+    rectifier: [[0.68], [0.71, 0.65]]
+
+  post_processing:
+    post_center_limit_range: [-80, -80, -7, 80, 80, 5.8]
+    max_per_img: 4096
+    nms:
+      nms_pre_max_size: 4096
+      nms_post_max_size: 500
+#      nms_iou_threshold: [[0.7], [0.2, 0.25]]
+      nms_iou_threshold: [[0.1], [0.1, 0.1]]
+    score_threshold: 0.1
+
+  in_channels: 3
+  base_channels: 32
+  encoder_channels: [32, 64, 128, 256]
+  encoder_blocks: [2, 2, 2, 2]
+  decoder_channels: [256, 128, 96, 96]
+  decoder_blocks: [2, 2, 2, 2]
+  max_voxels:
+  loss_types: ['DiceLossV1', 'LovLoss', 'CELoss']
+  loss_weights: [1.0, 1.0, 1.0]
+  ignore_index: 0
+  label_smoothing: 0.0
+  class_weight:
+  cls_num_pts:
+  knn: 10

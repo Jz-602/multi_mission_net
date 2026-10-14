@@ -1,0 +1,19 @@
+对比了将backbone中的layer_nums: [ 2, 2, 2, 2 ]修改为layer_nums: [ 1, 1, 1, 1 ]，发现性能变化不大
+
+
+
+目前的试验是将ds_num_filters: [128, 256, 256]修改为    ds_num_filters: [64, 128, 256]，并且把neck中的
+x = self.post_conv(
+    torch.cat((x, branch1x1, branch1, branch6, branch12, branch18), dim=1))
+修改为
+x = self.post_conv(
+    torch.cat((branch1, branch6, branch12, branch18), dim=1))
+    
+模型参数由600多万降至400多万。
+
+
+目前的模型已经将模型参数量降至200万。
+
+
+
+目前是先将训练轮数设置为36，训练了36轮，然后又将训练轮数更改为48，又训练了12轮。因此与直接训练48轮的效果可能不同。

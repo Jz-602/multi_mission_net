@@ -1,0 +1,10 @@
+------------------ start ------------------
+map_path : /media/alv-2/Rambo/Data/KITTI-Map/map_0.08/
+patch_path : /media/alv-2/Rambo/Data/KITTI-patches/
+seq_id : 51
+patch_width_x : 5
+patch_length_y : 5
+patch_height_z : 1.0
+patch_radius : 6.0
+patch_mini_points : 500
+------------------- end -------------------

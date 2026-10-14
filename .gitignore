@@ -47,16 +47,18 @@ report_runs/
 /3mission_model/SERVER_PROGRESS.md
 /3mission_model/SERVER_CODEX_HANDOFF.md
 
-# Historical/reference projects and external framework remain local.
-/FH_Object_Detection/
-/MEMORY_waymo/
-/ODSS_memory/
-/ODSS_project/
-/PTV3/
-/mmdetection3d-main/
-
 # Papers are not source code.
 *.pdf
+
+# Dataset samples and visual artifacts are not source code.
+*.bin
+*.png
+*.jpg
+*.jpeg
+*.gif
+/FH_Object_Detection/CodeStackPython/ZWJ/lidartoolbox-main/data/
+/FH_Object_Detection/CodeStackPython/ZWJ/lidartoolbox-main/pics/
+/mmdetection3d-main/resources/
 
 ## Compiled extensions and build products
 build/

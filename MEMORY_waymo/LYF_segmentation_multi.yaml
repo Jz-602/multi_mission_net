@@ -1,0 +1,119 @@
+sync_batchnorm: True
+random_seed: 0
+
+common_variables:
+  root_path: ${WAYMO_DATA_ROOT}
+  label_mapping: waymo_merge_example.yaml
+  ignore_index: 0
+
+  tasks: [['vehicle'], ['pedestrian', 'cyclist']]
+  pc_range: [-80, -80, -7, 80, 80, 5.8]
+  voxel_size: [0.05, 0.05, 0.05]
+  out_size_factor: [4, 4]
+
+dataloader:
+  train:
+    batch_size: 1
+    num_workers: 2
+    shuffle: True
+    pin_memory: False
+  val:
+    batch_size: 1
+    num_workers: 2
+    shuffle: False
+    pin_memory: False
+
+optimizer:
+  _target_: torch.optim.AdamW
+  lr: 0.00075
+  betas: [0.9, 0.99]
+  weight_decay: 0.01
+  amsgrad: False
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.OneCycleLR
+  max_lr: 0.00075
+  div_factor: 5.0
+  pct_start: 0.05
+  anneal_strategy: cos
+  final_div_factor: 1000.0
+
+trainer:
+  clip_grad_val: 35
+  eval_every_nepochs: 5
+  eval_epochs: [40,41,42,43,44,45,46,47,48]
+  max_epochs: 48
+  log_every_niters: 50
+  freeze_x3_encoder: false
+
+data:
+  train_dataset:
+    info_path: LYF_waymo_infos_training_semantic.pkl
+    full_info_path: waymo_infos_training_point_only.pkl
+    sample_fraction: 0.5
+    sample_seed: 0
+    warmup_len: 15
+    train_len: 1
+    b_random_history_interval: True
+    history_interval_min: 1
+    history_interval_max: 5
+    b_shared_clip_augmentation: True
+    loading_pipelines:
+      - FH_LoadPointCloud
+      - load_semantic
+
+    augmentation:
+      rotation:
+        _target_: Augmentation.Rotation
+        rotation: [-0.785, 0.785]
+      scaling:
+        _target_: Augmentation.Scaling
+        scale: [0.9, 1.1]
+      translation:
+        _target_: Augmentation.Translation
+        noise: 0.5
+      flip:
+        _target_: Augmentation.Flip
+        flip_prob: [0.5, 0.5]
+
+  val_dataset:
+    info_path: LYF_waymo_infos_validation_semantic.pkl
+    full_info_path: waymo_infos_validation_point_only.pkl
+    sample_fraction: 1.0
+    sample_seed: 0
+    warmup_len: 15
+    train_len: 1
+    b_random_history_interval: False
+    eval_history_interval: 3
+    b_shared_clip_augmentation: True
+    loading_pipelines:
+      - FH_LoadPointCloud
+      - load_semantic
+
+  test_dataset:
+    info_path: LYF_waymo_infos_validation_semantic.pkl
+    full_info_path: waymo_infos_validation_point_only.pkl
+    sample_fraction: 1.0
+    sample_seed: 0
+    loading_pipelines:
+      - FH_LoadPointCloud
+      - load_semantic
+
+model:
+  in_channels: 3
+  base_channels: 32
+  encoder_channels: [32, 64, 128, 256]
+  encoder_blocks: [2, 2, 3, 4]
+  decoder_channels: [256, 128, 96, 96]
+  decoder_blocks: [4, 3, 2, 2]
+  memory_transformer_depth: 2
+  memory_num_heads: 4
+  memory_topk: 10
+  memory_coord_radius: [1, 2, 2] # z,y,x
+  loss_types: ['DiceLossV1', 'LovLoss', 'CELoss']
+  loss_weights: [1.0, 1.0, 1.0]
+  ignore_index: 0
+  label_smoothing: 0.0
+  class_weight:
+  cls_num_pts:
+  knn: 10

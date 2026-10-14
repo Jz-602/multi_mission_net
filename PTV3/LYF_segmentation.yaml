@@ -1,0 +1,137 @@
+sync_batchnorm: True
+random_seed: 0
+
+common_variables:
+  root_path: ${WAYMO_DATA_ROOT}
+  label_mapping: waymo_merge_example.yaml
+  ignore_index: 0
+
+  tasks: [['vehicle'], ['pedestrian', 'cyclist']]
+  pc_range: [-80, -80, -7, 80, 80, 5.8]
+  voxel_size: [0.075, 0.075, 0.075]
+  out_size_factor: [4, 4]
+
+dataloader:
+  train:
+    batch_size: 1
+    num_workers: 3
+    shuffle: True
+    pin_memory: False
+  val:
+    batch_size: 1
+    num_workers: 3
+    shuffle: False
+    pin_memory: False
+
+optimizer:
+  _target_: torch.optim.AdamW
+  lr: 0.002
+  betas: [0.9, 0.999]
+  weight_decay: 0.005
+  amsgrad: False
+  param_groups:
+    - keyword: block
+      lr: 0.0002
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.OneCycleLR
+  max_lr: [0.002, 0.0002]
+  div_factor: 10.0
+  pct_start: 0.05
+  final_div_factor: 100.0
+
+trainer:
+  clip_grad_val: 35
+  eval_every_nepochs: 4
+  eval_epochs: [40,41,42,43,44,45,46,47,48]
+  max_epochs: 48
+  log_every_niters: 50
+
+data:
+  train_dataset:
+    info_path: LYF_waymo_infos_training_semantic.pkl
+    sample_fraction: 0.5
+    sample_seed: 0
+    sampler_use_until_epoch_ratio: 0.85
+    lasermix_use_until_epoch_ratio: 0.6
+    loading_pipelines:
+      - FH_LoadPointCloud
+      - load_box3d
+      - load_semantic
+
+    augmentation:
+      rotation:
+        _target_: Augmentation.Rotation
+        rotation: [-0.785, 0.785]
+      scaling:
+        _target_: Augmentation.Scaling
+        scale: [0.9, 1.1]
+      translation:
+        _target_: Augmentation.Translation
+        noise: 0.5
+      flip:
+        _target_: Augmentation.Flip
+        flip_prob: [0.5, 0.5]
+
+    sampler:
+      dbinfo_path:
+        - 'LYF_waymo_dbinfos_train_sample_semantic.pkl'
+      groups:
+        ['vehicle': 15, 'pedestrian': 10, 'cyclist': 10, 'sign': 10]
+      min_gt_point_dict:
+        vehicle: 10
+        pedestrian: 10
+        cyclist: 10
+        sign: 10
+
+    lasermix:
+      prob: 0.3
+
+  val_dataset:
+    info_path: LYF_waymo_infos_validation_semantic.pkl
+    sample_fraction: 1.0
+    sample_seed: 0
+    loading_pipelines:
+      - FH_LoadPointCloud
+      - load_semantic
+
+  test_dataset:
+    info_path: LYF_waymo_infos_validation_semantic.pkl
+    sample_fraction: 1.0
+    sample_seed: 0
+    loading_pipelines:
+      - FH_LoadPointCloud
+      - load_semantic
+
+model:
+  in_channels: 3
+  ptv3_order: ['z', 'z-trans', 'hilbert', 'hilbert-trans']
+  ptv3_enable_flash: True
+  ptv3_shuffle_orders: True
+  ptv3_stride: [2, 2, 2, 2]
+  ptv3_enc_depths: [2, 2, 2, 6, 2]
+  ptv3_enc_channels: [32, 64, 128, 256, 512]
+  ptv3_enc_num_head: [2, 4, 8, 16, 32]
+  ptv3_enc_patch_size: [1024, 1024, 1024, 1024, 1024]
+  ptv3_dec_depths: [2, 2, 2, 2]
+  ptv3_dec_channels: [64, 64, 128, 256]
+  ptv3_dec_num_head: [4, 4, 8, 16]
+  ptv3_dec_patch_size: [1024, 1024, 1024, 1024]
+  ptv3_mlp_ratio: 4.0
+  ptv3_qkv_bias: True
+  ptv3_attn_drop: 0.0
+  ptv3_proj_drop: 0.0
+  ptv3_drop_path: 0.3
+  ptv3_pool_reduce: max
+  base_channels: 32
+  encoder_channels: [32, 64, 128, 256]
+  encoder_blocks: [2, 2, 3, 4]
+  decoder_channels: [256, 128, 96, 96]
+  decoder_blocks: [4, 3, 2, 2]
+  loss_types: ['CELoss', 'LovLoss', 'DiceLossV1']
+  loss_weights: [1.0, 1.0, 1.0]
+  ignore_index: 0
+  label_smoothing: 0.0
+  class_weight:
+  cls_num_pts:
+  knn: 10
