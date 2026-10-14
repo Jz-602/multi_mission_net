@@ -1,0 +1,7 @@
+_BASE_CONFIG_: server_dynamic50_single.yaml
+# 与时序同一正式single48初始化，再执行同样的48轮动态抽样预算。
+optimizer:
+  lr: 0.00075
+scheduler:
+  max_lr: 0.00075
+  div_factor: 5.0

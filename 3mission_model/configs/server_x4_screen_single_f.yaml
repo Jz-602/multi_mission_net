@@ -1,0 +1,8 @@
+_BASE_CONFIG_: server_x4_screen_f.yaml
+data:
+  train_dataset:
+    warmup_len: 0
+  val_dataset:
+    warmup_len: 0
+detection_screen:
+  candidate: single_fixed_pretrained_bn_control

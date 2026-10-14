@@ -1,0 +1,50 @@
+CLASS_NAMES:
+  - UNDEFINED
+  - VEHICLE
+  - RIDER
+  - PEDESTRIAN
+  - SIGN_POLE
+  - BUILDING
+  - VEGETATION
+  - ROAD
+  - SECONDARY_ROAD
+
+learning_map:
+  0: 0    # unlabeled
+  1: 0    # outlier
+
+  10: 1   # car -> VEHICLE
+  11: 1   # bicycle -> VEHICLE
+  13: 1   # bus -> VEHICLE
+  15: 1   # motorcycle -> VEHICLE
+  16: 1   # on-rails -> VEHICLE
+  18: 1   # truck -> VEHICLE
+  20: 1   # other-vehicle -> VEHICLE
+
+  30: 3   # person -> PEDESTRIAN
+  31: 2   # bicyclist -> RIDER
+  32: 2   # motorcyclist -> RIDER
+
+  40: 7   # road -> ROAD
+  44: 8   # parking -> SECONDARY_ROAD
+  48: 8   # sidewalk -> SECONDARY_ROAD
+  49: 8   # other-ground -> SECONDARY_ROAD
+  50: 5   # building -> BUILDING
+  51: 0   # fence -> UNDEFINED
+  52: 0   # other-structure -> UNDEFINED
+  60: 7   # lane-marking -> ROAD
+  70: 6   # vegetation -> VEGETATION
+  71: 6   # trunk -> VEGETATION
+  72: 8   # terrain -> SECONDARY_ROAD
+  80: 4   # pole -> SIGN_POLE
+  81: 4   # traffic-sign -> SIGN_POLE
+  99: 0   # other-object -> UNDEFINED
+
+  252: 1  # moving-car -> VEHICLE
+  253: 2  # moving-bicyclist -> RIDER
+  254: 3  # moving-person -> PEDESTRIAN
+  255: 2  # moving-motorcyclist -> RIDER
+  256: 1  # moving-on-rails -> VEHICLE
+  257: 1  # moving-bus -> VEHICLE
+  258: 1  # moving-truck -> VEHICLE
+  259: 1  # moving-other-vehicle -> VEHICLE

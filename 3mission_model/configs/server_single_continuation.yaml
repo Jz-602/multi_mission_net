@@ -1,0 +1,7 @@
+_BASE_CONFIG_: server_single.yaml
+# 从同一个单帧 checkpoint 继续相同步数；对应时序阶段额外训练预算。
+optimizer:
+  lr: 0.00075
+scheduler:
+  max_lr: 0.00075
+  div_factor: 5.0

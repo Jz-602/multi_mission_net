@@ -1,0 +1,121 @@
+sync_batchnorm: True
+random_seed: 0
+
+common_variables:
+  root_path: ${WAYMO_DATA_ROOT}
+  label_mapping: waymo_merge_example.yaml
+  ignore_index: 0
+
+  tasks: [['vehicle'], ['pedestrian', 'cyclist']]
+  pc_range: [-80, -80, -7, 80, 80, 5.8]
+  voxel_size: [0.05, 0.05, 0.05]
+  out_size_factor: [4, 4]
+
+dataloader:
+  train:
+    batch_size: 2
+    num_workers: 3
+    shuffle: True
+    pin_memory: False
+  val:
+    batch_size: 2
+    num_workers: 3
+    shuffle: False
+    pin_memory: False
+
+optimizer:
+  _target_: torch.optim.AdamW
+  lr: 0.0015
+  betas: [0.9, 0.99]
+  weight_decay: 0.01
+  amsgrad: False
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.OneCycleLR
+  max_lr: 0.0015
+  div_factor: 10.0
+  pct_start: 0.4
+  final_div_factor: 1000.0
+
+trainer:
+  checkpoint_dir: ./checkpoints_xyzl
+  init_from_checkpoint: ./checkpoints/epoch_60.pth
+  clip_grad_val: 35
+  eval_every_nepochs: 5
+  eval_epochs: [50,51,52,53,54,55,56,57,58,59,60]
+  max_epochs: 60
+  log_every_niters: 50
+
+data:
+  train_dataset:
+    info_path:
+      - LYF_waymo_infos_training_semantic.pkl
+      - LYF_waymo_infos_validation_semantic.pkl
+    sample_fraction: 1.0
+    sample_seed: 0
+    sampler_use_until_epoch_ratio: 0.85
+    semantic_prior_dropout:
+      max_drop_ratio: 0.4
+    loading_pipelines:
+      - FH_LoadPointCloud
+      - load_semantic_prior
+      - load_box3d
+      - load_semantic
+
+    augmentation:
+      rotation:
+        _target_: Augmentation.Rotation
+        rotation: [-0.785, 0.785]
+      scaling:
+        _target_: Augmentation.Scaling
+        scale: [0.9, 1.1]
+      translation:
+        _target_: Augmentation.Translation
+        noise: 0.5
+      flip:
+        _target_: Augmentation.Flip
+        flip_prob: [0.5, 0.5]
+
+    sampler:
+      dbinfo_path:
+        - 'LYF_waymo_dbinfos_train_sample_semantic.pkl'
+      groups:
+        ['vehicle': 15, 'pedestrian': 10, 'cyclist': 10, 'sign': 10]
+      min_gt_point_dict:
+        vehicle: 10
+        pedestrian: 10
+        cyclist: 10
+        sign: 10
+
+  val_dataset:
+    info_path: LYF_waymo_infos_validation_semantic.pkl
+    sample_fraction: 1.0
+    sample_seed: 0
+    loading_pipelines:
+      - FH_LoadPointCloud
+      - load_semantic_prior
+      - load_semantic
+
+  test_dataset:
+    info_path: LYF_waymo_infos_validation_semantic.pkl
+    sample_fraction: 1.0
+    sample_seed: 0
+    loading_pipelines:
+      - FH_LoadPointCloud
+      - load_semantic_prior
+      - load_semantic
+
+model:
+  in_channels: 4
+  base_channels: 32
+  encoder_channels: [32, 64, 128, 256]
+  encoder_blocks: [2, 2, 3, 4]
+  decoder_channels: [256, 128, 96, 96]
+  decoder_blocks: [4, 3, 2, 2]
+  loss_types: ['DiceLossV1', 'LovLoss', 'CELoss']
+  loss_weights: [1.0, 1.0, 2.0]
+  ignore_index: 0
+  label_smoothing: 0.0
+  class_weight:
+  cls_num_pts:
+  knn: 10

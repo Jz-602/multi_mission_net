@@ -1,0 +1,21 @@
+_BASE_CONFIG_: ../LYF_ODSS_config.yaml
+# 24 GiB 服务器已验收配置；资源及速度证据见SERVER_PROGRESS.md。
+allow_tf32: true
+label_manifest: ../data_manifests/waymo_three_task_20260930.json
+common_variables:
+  pc_range: [-24, -24, -7, 24, 24, 5.8]
+data:
+  train_dataset:
+    info_path: three_task_20260930_infos_training_semantic.pkl
+    sample_fraction: 1.0
+  val_dataset:
+    info_path: three_task_20260930_infos_validation_semantic.pkl
+    sample_fraction: 1.0
+  test_dataset:
+    info_path: three_task_20260930_infos_validation_semantic.pkl
+    sample_fraction: 1.0
+model:
+  occ:
+    b_checkpoint_refinement: false
+  post_processing:
+    post_center_limit_range: [-24, -24, -7, 24, 24, 5.8]

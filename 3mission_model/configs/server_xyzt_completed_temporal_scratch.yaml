@@ -1,0 +1,9 @@
+_BASE_CONFIG_: server_xyzt_completed_temporal.yaml
+# 从零48轮，与从零单帧采用同一优化预算；不加载单帧权重。
+run:
+  allow_random_temporal: true
+optimizer:
+  lr: 0.0015
+scheduler:
+  max_lr: 0.0015
+  div_factor: 10.0

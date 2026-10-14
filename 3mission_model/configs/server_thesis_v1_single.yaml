@@ -1,0 +1,20 @@
+_BASE_CONFIG_: server_xyzt_completed_single.yaml
+# 新论文版本：完整候选池、动态50%、新地形有效区域任务，从头48轮。
+# 根筛选仅在打分前使用无仿射LayerNorm；见论文协议及匹配400步/固定六例证据。
+model:
+  b_collect_detection_range_metrics: true
+  terrain:
+    b_predict_validity: true
+    validity_weight: 1.0
+  occ:
+    root_input_normalization: layer_norm
+    b_collect_root_diagnostics: true
+    b_collect_occ_stage_statistics: true
+trainer:
+  max_epochs: 48
+  eval_every_nepochs: 1
+  eval_epochs: null
+collect_training_memory: true
+
+thesis_v1:
+  stage: s0

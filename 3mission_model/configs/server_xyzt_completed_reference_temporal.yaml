@@ -1,0 +1,9 @@
+_BASE_CONFIG_: server_xyzt_completed_temporal.yaml
+# 旧三通道正式权重仅在新检测GT上补做验证，不训练、不输入新增时间通道。
+data:
+  train_dataset:
+    b_use_time_feature: false
+  val_dataset:
+    b_use_time_feature: false
+model:
+  in_channels: 3

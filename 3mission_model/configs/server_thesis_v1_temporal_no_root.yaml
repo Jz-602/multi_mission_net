@@ -1,0 +1,9 @@
+_BASE_CONFIG_: server_thesis_v1_temporal.yaml
+# 独立无筛选训练：关闭模块与对应根BCE，叶级三损失不变。
+model:
+  occ:
+    b_enable_root_filter: false
+    b_apply_root_filter: false
+    root_loss_weight: 0.0
+thesis_v1:
+  stage: t_no_root

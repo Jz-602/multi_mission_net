@@ -1,0 +1,9 @@
+_BASE_CONFIG_: server_x4_screen_f.yaml
+# 用户2026-10-10授权：复用F前5轮，恢复模型/优化器/调度至累计48轮。
+# 独立长训入口，不更改原筛选配置及其5轮上限。
+detection_screen: null
+collect_training_memory: true
+trainer:
+  max_epochs: 48
+  eval_every_nepochs: 0
+  eval_epochs: [6, 10, 15, 20, 25, 30, 35, 40, 41, 42, 43, 44, 45, 46, 47, 48]

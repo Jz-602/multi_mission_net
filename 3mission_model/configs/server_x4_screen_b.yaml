@@ -1,0 +1,5 @@
+_BASE_CONFIG_: server_x4_screen_a.yaml
+model:
+  x4_detection_source: current_f4
+detection_screen:
+  candidate: B_current_f4

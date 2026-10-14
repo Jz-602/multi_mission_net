@@ -1,0 +1,20 @@
+_BASE_CONFIG_: server_x4_screen_f.yaml
+# 固定已验证E4检测/F4静态任务；新地形双头，其余结构不搜索。
+detection_screen: null
+collect_training_memory: true
+model:
+  b_collect_detection_range_metrics: true
+  x4_fusion_init_seed: 0
+  terrain:
+    b_predict_validity: true
+    validity_weight: 1.0
+  occ:
+    root_input_normalization: layer_norm
+    b_collect_root_diagnostics: true
+    b_collect_occ_stage_statistics: true
+trainer:
+  max_epochs: 48
+  eval_every_nepochs: 1
+  eval_epochs: null
+thesis_v1:
+  stage: t

@@ -1,0 +1,28 @@
+_BASE_CONFIG_: ../LYF_ODSS_config_multi.yaml
+allow_tf32: true
+common_variables:
+  pc_range: [-16, -16, -7, 16, 16, 5.8]
+dataloader:
+  train:
+    num_workers: 0
+    shuffle: false
+  val:
+    num_workers: 0
+run:
+  train_samples: 1
+  train_offset: 10
+  val_samples: 1
+optimizer:
+  lr: 0.0002
+scheduler:
+  max_lr: 0.0002
+  pct_start: 0.3
+  div_factor: 1.0
+  final_div_factor: 10.0
+trainer:
+  max_epochs: 12
+  eval_every_nepochs: 0
+  eval_epochs: []
+model:
+  post_processing:
+    post_center_limit_range: [-16, -16, -7, 16, 16, 5.8]

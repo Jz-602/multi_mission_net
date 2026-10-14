@@ -1,0 +1,8 @@
+_BASE_CONFIG_: server_thesis_v1_temporal.yaml
+data:
+  train_dataset:
+    warmup_len: 0
+  val_dataset:
+    warmup_len: 0
+thesis_v1:
+  stage: s

@@ -1,0 +1,14 @@
+_BASE_CONFIG_: server_dynamic50_temporal.yaml
+# 独立补框标签版本；原地形/OCC、候选池、动态50%及验证划分保持不变。
+completed_detection_manifest: $WAYMO_DATA_ROOT/detection_completed_20261007/manifest.json
+data:
+  train_dataset:
+    info_path: detection_completed_20261007/infos_training.pkl
+    b_use_time_feature: true
+    b_use_completed_detection_labels: true
+  val_dataset:
+    info_path: detection_completed_20261007/infos_validation.pkl
+    b_use_time_feature: true
+    b_use_completed_detection_labels: true
+model:
+  in_channels: 4

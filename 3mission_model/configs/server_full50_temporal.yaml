@@ -1,0 +1,14 @@
+_BASE_CONFIG_: server_temporal.yaml
+# 只采样监督目标；15帧历史仍从完整point-only infos读取。
+label_manifest: ../data_manifests/waymo_three_task_full50.json
+data:
+  train_dataset:
+    info_path: LYF_waymo_infos_training_semantic.pkl
+    full_info_path: waymo_infos_training_point_only.pkl
+    sample_fraction: 0.5
+    sample_seed: 0
+  val_dataset:
+    info_path: LYF_waymo_infos_validation_semantic.pkl
+    full_info_path: waymo_infos_validation_point_only.pkl
+    sample_fraction: 1.0
+    sample_seed: 0

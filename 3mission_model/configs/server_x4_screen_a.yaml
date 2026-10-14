@@ -1,0 +1,19 @@
+_BASE_CONFIG_: server_xyzt_completed_temporal.yaml
+# 真实执行上限5；48仅定义沿用的OneCycle日程，不允许一次运行超过一轮。
+model:
+  x4_detection_source: full_f4
+  # X3原邻域半径为ZYX [.4,.8,.8]m；X4取[0,1,1]会丢失z邻域。
+  # 采用ZYX [1,1,1]个X4格，即[.8,.8,.8]m，A/B完全一致。
+  memory_coord_radius: [1, 1, 1]
+trainer:
+  max_epochs: 48
+  eval_every_nepochs: 1
+  eval_epochs: [0, 1, 2, 3, 4, 5]
+detection_screen:
+  candidate: A_full_f4
+  max_new_epochs: 5
+  max_detection_drop_pp: 5.0
+  expected_targets: 5973
+  history_bn: train_statistics_no_grad
+  optimizer_initialization: reset
+  scheduler_protocol: original_48_epoch_continuation_prefix

@@ -1,0 +1,6 @@
+_BASE_CONFIG_: server_x4_screen_c.yaml
+model:
+  b_freeze_pretrained_bn_stats: true
+detection_screen:
+  candidate: F_e4_fixed_pretrained_bn
+  history_bn: fixed_pretrained_backbone_and_bev_stats_current_and_history_affine_trainable

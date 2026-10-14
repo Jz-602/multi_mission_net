@@ -1,0 +1,9 @@
+_BASE_CONFIG_: server_x4_screen_a.yaml
+# 独立BEV投影改变训练梯度共享，采用同结构无历史共享5轮对照。
+data:
+  train_dataset:
+    warmup_len: 0
+  val_dataset:
+    warmup_len: 0
+detection_screen:
+  candidate: single_same_structure

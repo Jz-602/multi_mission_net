@@ -1,0 +1,4 @@
+_BASE_CONFIG_: server_single.yaml
+model:
+  occ:
+    b_enable_root_filter: false

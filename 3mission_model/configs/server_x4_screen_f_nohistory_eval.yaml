@@ -1,0 +1,6 @@
+_BASE_CONFIG_: server_x4_screen_f.yaml
+# 仅供同一F5权重的 --validate-only 诊断，不创建新训练候选。
+detection_screen: null
+data:
+  val_dataset:
+    warmup_len: 0

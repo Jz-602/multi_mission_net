@@ -1,0 +1,66 @@
+/FH_Object_Detection/2025-waymo-seg/checkpoints/
+/FH_Object_Detection/2025-Waymo-OD/checkpoints/
+/ODSS_project/checkpoints/
+/ODSS_project/log/
+
+## Python / cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+## IDE / local state
+.idea/
+.vscode/
+.codex
+.codegraph/
+Scene_Tag_Completion/sh/
+
+## Training outputs
+/实验报告/
+/archive_implementation_20260716/
+checkpoints/
+checkpoints_multi/
+checkpoints_*/
+log/
+logs/
+runs/
+tensorboard/
+wandb/
+outputs/
+/gt_generate/static_scene_gt_outputs/
+
+## Model weights and generated data
+*.pth
+report_runs/
+*.pt
+*.ckpt
+*.pkl
+*.pcd
+*.label
+*.npy
+*.npz
+
+## Current repository excludes
+# Generated manifests and server handoff records are recreated or kept locally.
+/3mission_model/data_manifests/
+/3mission_model/SERVER_PROGRESS.md
+/3mission_model/SERVER_CODEX_HANDOFF.md
+
+# Historical/reference projects and external framework remain local.
+/FH_Object_Detection/
+/MEMORY_waymo/
+/ODSS_memory/
+/ODSS_project/
+/PTV3/
+/mmdetection3d-main/
+
+# Papers are not source code.
+*.pdf
+
+## Compiled extensions and build products
+build/
+*.so
+*.o
+*.cuo
+*.egg

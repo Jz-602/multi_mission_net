@@ -1,0 +1,7 @@
+_BASE_CONFIG_: server_x4_screen_f.yaml
+model:
+  occ:
+    # 仅取消实际删除；保留根打分器、BCE监督、权重及全部单帧初始化参数。
+    b_apply_root_filter: false
+detection_screen:
+  candidate: F_e4_fixed_pretrained_bn_no_root_deletion

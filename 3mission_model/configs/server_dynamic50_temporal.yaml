@@ -1,0 +1,8 @@
+_BASE_CONFIG_: server_full50_temporal.yaml
+# 15历史+1目标；完整候选的历史关联保持不变，每轮仅抽监督目标。
+label_manifest: ../data_manifests/waymo_three_task_dynamic50.json
+data:
+  train_dataset:
+    b_dynamic_epoch_sampling: true
+    sample_fraction: 0.5
+    sample_seed: 0

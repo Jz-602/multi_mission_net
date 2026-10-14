@@ -1,0 +1,16 @@
+_BASE_CONFIG_: server_single.yaml
+# 全798训练序列固定50%目标；actual清单须在全部标签验收后生成。
+label_manifest: ../data_manifests/waymo_three_task_full50.json
+data:
+  train_dataset:
+    info_path: LYF_waymo_infos_training_semantic.pkl
+    sample_fraction: 0.5
+    sample_seed: 0
+  val_dataset:
+    info_path: LYF_waymo_infos_validation_semantic.pkl
+    sample_fraction: 1.0
+    sample_seed: 0
+  test_dataset:
+    info_path: LYF_waymo_infos_validation_semantic.pkl
+    sample_fraction: 1.0
+    sample_seed: 0

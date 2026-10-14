@@ -1,0 +1,8 @@
+_BASE_CONFIG_: server_full50_single.yaml
+# 全部训练候选保留；每轮由seed+epoch抽50%，再由八卡DDP分片。
+label_manifest: ../data_manifests/waymo_three_task_dynamic50.json
+data:
+  train_dataset:
+    b_dynamic_epoch_sampling: true
+    sample_fraction: 0.5
+    sample_seed: 0

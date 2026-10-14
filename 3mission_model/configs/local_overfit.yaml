@@ -1,0 +1,29 @@
+_BASE_CONFIG_: ../LYF_ODSS_config.yaml
+# 固定训练帧验证可学习性；不是泛化精度实验。
+allow_tf32: true
+common_variables:
+  pc_range: [-16, -16, -7, 16, 16, 5.8]
+dataloader:
+  train:
+    num_workers: 0
+    shuffle: false
+  val:
+    num_workers: 0
+run:
+  train_samples: 1
+  train_offset: 10
+  val_samples: 2
+optimizer:
+  lr: 0.0005
+scheduler:
+  max_lr: 0.0005
+  pct_start: 0.1
+  div_factor: 1.0
+  final_div_factor: 10.0
+trainer:
+  max_epochs: 100
+  eval_every_nepochs: 0
+  eval_epochs: []
+model:
+  post_processing:
+    post_center_limit_range: [-16, -16, -7, 16, 16, 5.8]
